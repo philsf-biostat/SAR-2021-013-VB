@@ -5,18 +5,18 @@
 <!-- - v02: substituir ppp01/ppp02 pelo projeto -->
 <!-- - Remover esse bloco -->
 
-# título
+# Eficácia da técnica anestésica de bloqueio quadrado lombar na redução da dor pós operatória em colecistectomias videolaparoscópicas
 
 Objetivo
 
-Análise Estatística para PESSOA (LOCAL, aaaa)
+Análise Estatística para Virna Brandão (Doutorado Hospital Universitário Gaffree e Guinle - HUGG/UNIRIO, 2021)
 
 ## Análises realizadas
 
 1. Análise descritiva
 1. Análise inferencial
 1. Análise de poder
-1. Modelagem estatística
+<!-- 1. Modelagem estatística -->
 
 ## Documentos
 
