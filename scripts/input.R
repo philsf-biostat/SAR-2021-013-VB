@@ -7,30 +7,38 @@ library(labelled)
 
 # data loading ------------------------------------------------------------
 set.seed(42)
-data.raw <- tibble(id=gl(2, 10), group = gl(2, 10), outcome = rnorm(20))
-# data.raw <- read_excel("dataset/file.xlsx") %>%
-#   janitor::clean_names()
-
+# data.raw <- tibble(id=gl(2, 10), group = gl(2, 10), outcome = rnorm(20))
+data.raw <- read_excel("dataset/Tabela de dados analíticos.xlsx")
 
 # data cleaning -----------------------------------------------------------
 
-# data.raw <- data.raw %>%
-#   filter() %>%
-#   select()
+data.raw <- data.raw %>%
+  separate(`PEM T0/PIM T0`, c("PEM T0", "PIM T0"), convert = TRUE) %>%
+  separate(`PEM T4/PIM T4`, c("PEM T4", "PIM T4"), convert = TRUE) %>%
+  separate(`PEM T24/PIM T24`, c("PEM T24", "PIM T24"), convert = TRUE) %>%
+  janitor::clean_names() %>%
+  mutate(id = str_replace(id, " ", "")) %>%
+  distinct()
 
 # data wrangling ----------------------------------------------------------
 
-# data.raw <- data.raw %>%
-#   mutate(
-#
-#   )
+data.raw <- data.raw %>%
+  mutate(
+    grupo = factor(grupo), grupo = relevel(grupo, "Controle"),
+    intensa_t1 = dor_t1 > 3,
+    intensa_t4 = dor_t4 > 3,
+    intensa_t24 = dor_t24 > 3,
+  )
 
 # labels ------------------------------------------------------------------
 
 data.raw <- data.raw %>%
   set_variable_labels(
-    group = "Study group",
-    outcome = "Study outcome",
+    grupo = "Grupo",
+    # outcome = "Study outcome",
+    intensa_t1 = "Dor moderada ou intensa (1h)",
+    intensa_t4 = "Dor moderada ou intensa (4h)",
+    intensa_t24 = "Dor moderada ou intensa (24h)",
   )
 
 # analytical dataset ------------------------------------------------------
@@ -38,9 +46,10 @@ data.raw <- data.raw %>%
 analytical <- data.raw %>%
   # select analytic variables
   select(
-    id,
-    group,
-    outcome,
+    # id,
+    # grupo,
+    -nome,
+    -prontuario,
   )
 
 # mockup of analytical dataset for SAP and public SAR
