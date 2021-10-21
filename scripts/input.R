@@ -28,6 +28,8 @@ data.raw <- data.raw %>%
     intensa_t1 = dor_t1 > 3,
     intensa_t4 = dor_t4 > 3,
     intensa_t24 = dor_t24 > 3,
+    pem = pem_t4 - pem_t0,
+    pim = pim_t4 - pim_t0,
   )
 
 # labels ------------------------------------------------------------------
