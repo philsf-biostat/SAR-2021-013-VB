@@ -6,12 +6,12 @@
 
 # tables ------------------------------------------------------------------
 
-# template p-value table
-tab_inf <- analytical %>%
+# baseline characterísticas
+tab_desc <- analytical %>%
   # select
-  select(-id, ) %>%
+  select(grupo, idade, sexo, peso, asa, opioides, pem_t0, pim_t0) %>%
   tbl_summary(
-    by = group
+    by = grupo
   ) %>%
   # include study N
   add_overall() %>%
@@ -24,18 +24,35 @@ tab_inf <- analytical %>%
     # use 3 digits in pvalue
     pvalue_fun = function(x) style_pvalue(x, digits = 3)
   ) %>%
+  # modify_caption(caption = "**Tabela 1** Características demográficas") %>%
+  modify_header(label ~ "**Características dos participantes**") %>%
   # bold significant p values
   bold_p()
 
 # Template Cohen's D table (obs: does NOT compute p)
-# tab_inf <- analytical %>%
-#   # select
-#   select(-id, ) %>%
-#   tbl_summary(
-#     by = group
-#   ) %>%
-#   add_difference(
-#     test = all_continuous() ~ "cohens_d",
-#   ) %>%
-#   modify_header(estimate ~ '**d**') %>%
-#   bold_labels()
+tab_inf <- analytical %>%
+  mutate(grupo = relevel(grupo, "BQL")) %>%
+  # select
+  select(
+    grupo,
+    intensa_t1,
+    intensa_t4,
+    pem,
+    pim,
+    idade,
+    sexo,
+    peso,
+    ) %>%
+  tbl_summary(
+    by = grupo,
+    type = pim ~ "continuous",
+    include = c(intensa_t1, intensa_t4, pem, pim),
+  ) %>%
+  add_difference(
+    test = all_dichotomous() ~ "prop.test",
+    # adj.vars = c(sexo, idade, peso),
+  ) %>%
+  bold_p() %>%
+  modify_header(label ~ "**Desfechos**") %>%
+  # modify_header(estimate ~ '**d**') %>%
+  bold_labels()
